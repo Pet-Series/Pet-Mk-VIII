@@ -1,3 +1,4 @@
+
 # Pet-Mk-VII
 <h1 align="center">Welcome to the Pet-Mk-VII repository</h1>
 <h1 align="center">The Robot Dashboard</h1>
@@ -23,6 +24,10 @@ The main objective/scope for this repository is to control the part of the softw
 - http://wiki.ros.org/
 
 For my own convenience - Some GitHub cheat sheets
-- https://guides.github.com/features/mastering-markdown/
+</br></br>
+<a href="https://gitmoji.dev">
+  <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square" alt="Gitmoji">
+</a></br>
+- <a>https://guides.github.com/features/mastering-markdown/</a>
 - https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax
 - https://www.webfx.com/tools/emoji-cheat-sheet/
