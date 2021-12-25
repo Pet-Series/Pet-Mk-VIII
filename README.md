@@ -1,6 +1,6 @@
 
 # Pet-Mk-VIII
-<h1 align="center">Welcome to the Pet-Mk-VII repository</h1>
+<h1 align="center">Welcome to the Pet-Mk-VIII repository</h1>
 <h1 align="center">The Robot Dashboard</h1>
 
 ROS repository in the https://github.com/Pet-Series Git-Organizations.</br>
