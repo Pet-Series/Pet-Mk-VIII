@@ -10,8 +10,8 @@ Containing multiply ROS-packages.
 The main objective/scope for this repository is to control the part of the software (and parameter settings) that is unique for this Pet Mark VII (seven) robot.
 <table>
     <tr>Pet-Mk.V during developing.
-      <td><img src="./doc/Pet-Mk.VIII Build Phase_10.jpg" width="350px"></td>
-      <td><img src="./doc/Pet-Mk.VIII Build Phase_11.jpg" width="350px"></td>
+      <td><img src="./doc/Pet-Mk.VII Build Phase_10.jpg" width="350px"></td>
+      <td><img src="./doc/Pet-Mk.VII Build Phase_11.jpg" width="350px"></td>
     </tr>
   </table>
 
