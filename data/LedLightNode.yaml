@@ -1,0 +1,5 @@
+/LedLightNode:
+  ros__parameters:
+    led_gpio_pin: 26
+    led_topic: panel_led_1
+    use_sim_time: false
