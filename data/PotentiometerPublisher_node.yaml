@@ -1,0 +1,15 @@
+/PotentiometerPublisher_node:
+  ros__parameters:
+    adc_i2c_address: '0x49'
+    cycle_timer: 0.1
+    cycles_publish: 50
+    granularity: 5
+    ros_topic_p0: potentiometer_p0
+    ros_topic_p1: potentiometer_p1
+    ros_topic_p2: potentiometer_p2
+    ros_topic_p3: potentiometer_p3
+    scale_p0: 1
+    scale_p1: 1
+    scale_p2: 1
+    scale_p3: 1
+    use_sim_time: false
