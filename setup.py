@@ -24,7 +24,8 @@ setup(
     entry_points={
         'console_scripts': [
             "pet_ledlights_node=pet_mk_viii.pet_ledlights_node:main",
-            "pet_potentiometer_node=pet_mk_viii.pet_potentiometer_node:main"
+            "pet_potentiometer_node=pet_mk_viii.pet_potentiometer_node:main",
+            "pet_buttons_node=pet_mk_viii.pet_buttons_node:main"
         ],
     },
 )
