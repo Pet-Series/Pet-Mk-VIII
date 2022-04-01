@@ -31,10 +31,9 @@
 ## Host: Raspberry Pi 4(Ubuntu) via I2C
 ##
 ## Launch sequence:
-## 1) $ ros2 run pet_mk_viii_joystick joystick_node 
+## 1) $ ros2 run pet_mk_viii_joystick pet_potentiometer_node.py 
 ##
 
-# TODO: Naming convetions for the package: "pet_joystick" => "pet_ros2_joystick_pkg"
 # TODO: Get rid of time.sleep() with something more real time/concurrent and ROS2 friendly way of wait...
 
 # Import the ROS2-stuff
@@ -42,8 +41,7 @@ import rclpy  # TODO: IS this line neccesary. Due to the two following lines tha
 from rclpy.node import Node
 from rclpy.parameter import Parameter
 from rcl_interfaces.msg import ParameterDescriptor
-
-from std_msgs.msg       import Int32
+from std_msgs.msg import Int32
 
 # Import the Ubuntu/Linux-hardware stuff 
 from smbus2 import SMBus
@@ -56,6 +54,10 @@ import time
 import signal
 
 class PotentiometerPublisher(Node): 
+    '''
+    Analog potentiometer class
+    Read analog input -> Publish on ROS-topic
+    '''
     
     # Keep track of last joystick values. Used due to reducing communication of equal values.
     last_value_p0 = 0

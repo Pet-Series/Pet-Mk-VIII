@@ -82,6 +82,9 @@ LED1 = 19 # GPIO19 (Pin 35)
 LED0 = 26 # GPIO26 (Pin 37)
 
 class LedLightNode(Node): 
+    '''
+    ROS2 LED class for LED's direct wired to individual GPIO-pins.
+    '''
     def __init__(self):
         super().__init__("LedLightNode")
         # Set default topic-name for subscription. Accessed via ROS Parameters...
