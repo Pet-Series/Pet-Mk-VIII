@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from time import sleep
+import sys
 # Output from $ pinout
 #    3V3  (1) (2)  5V    
 #  GPIO2  (3) (4)  5V    
@@ -31,7 +32,9 @@ GPIO.setmode(GPIO.BOARD)                    # physical pin numbering
  # set pin 8 as output, initial to low (off)
 
 class LedLightNode():
-    """A simple LED-example class"""
+    """
+    A simple LED-example class
+    """
     def __init__(self, name):
         print("'def __init__(self): - Run oence'")
         GPIO.setup(LED, GPIO.OUT, initial=GPIO.LOW)
@@ -44,13 +47,12 @@ class LedLightNode():
                 GPIO.output(LED, GPIO.LOW)   # LOW / Off
                 sleep(1) 
 
-
         except KeyboardInterrupt:
             print("LedLightNode **** 💀 Ctrl-C detected...")
 
         finally:
             print("LedLightNode **** 🪦 Ending... ")
-            print( str(sys.exc_info()[1]) )
+            print( str(sys.exc_info()[1]) ) # Need ´import sys´
             
             # Time to clean up stuff!
             GPIO.cleanup() 

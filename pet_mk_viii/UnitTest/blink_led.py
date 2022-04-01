@@ -20,6 +20,7 @@ try:
         # Turn the GPIO pin off
         lgpio.gpio_write(h, LED, 0)
         time.sleep(1)
+
 except KeyboardInterrupt:
     lgpio.gpio_write(h, LED, 0)
     lgpio.gpiochip_close(h)

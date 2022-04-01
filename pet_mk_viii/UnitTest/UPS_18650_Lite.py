@@ -56,9 +56,7 @@ while True:
 
  print ("++++++++++++++++++++")
  print ("Voltage:%5.2fV" % readVoltage(bus))
-
  print ("Battery:%5i%%" % readCapacity(bus))
- 
  
  if readCapacity(bus) == 100:
 
@@ -67,19 +65,12 @@ while True:
  if readCapacity(bus) < 5:
 
         print ("Battery LOW")
-
-
-		
-		
-		
- if (GPIO.input(4) == GPIO.HIGH):
-        
+	
+ if (GPIO.input(4) == GPIO.HIGH):  
 		print ("Power Adapter Plug In ") 
 		
- if (GPIO.input(4) == GPIO.LOW):
-        
+ if (GPIO.input(4) == GPIO.LOW):   
 		print ("Power Adapter Unplug")
-		
-		
+				
  print ("++++++++++++++++++++")
  time.sleep(2)
