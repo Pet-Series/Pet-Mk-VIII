@@ -38,8 +38,8 @@ Using Analog/Digital Converter ADS1115 via I2C (3 of 4 chanels in use)
 For more information see https://github.com/Pet-Series/pet_ros2_joystick_pkg
 <table>
     <tr>Wiring diagram
-      <td><img src="./doc/pet_ros2_joystick_wiring.png" height="400px"></td>
-      <td><img src="./doc/rqt_node_graph-joystick_node.png" height="400px"></td>
+      <td><img src="./doc/pet_ros2_joystick_wiring.png" height="350px"></td>
+      <td><img src="./doc/rqt_node_graph-joystick_node.png" height="350px"></td>
     </tr>
 </table>
 
@@ -47,8 +47,8 @@ For more information see https://github.com/Pet-Series/pet_ros2_joystick_pkg
 Using Analog/Digital Converter ADS1115 via I2C (3 of 4 chanels in use)
 <table>
     <tr>Wiring diagram
-      <td><img src="./doc/pet_ros2_potentiometer_wiring.png" height="400px"></td>
-      <td><img src="./doc/rqt_node_graph-potentiometer_node.png" height="400px"></td>
+      <td><img src="./doc/pet_ros2_potentiometer_wiring.png" height="350px"></td>
+      <td><img src="./doc/rqt_node_graph-potentiometer_node.png" width="490px"></td>
     </tr>
 </table>
 
@@ -56,8 +56,8 @@ Using Analog/Digital Converter ADS1115 via I2C (3 of 4 chanels in use)
 Using direct GPIO-pins
 <table>
     <tr>Wiring diagram
-      <td><img src="./doc/pet_ros2_buttons_wiring.png" height="400px"></td>
-      <td><img src="./doc/rqt_node_graph-buttons_node.png" height="400px"></td>
+      <td><img src="./doc/pet_ros2_buttons_wiring.png" height="350px"></td>
+      <td><img src="./doc/rqt_node_graph-buttons_node.png" width="550px"></td>
     </tr>
 </table>
 
@@ -65,7 +65,7 @@ Using direct GPIO-pins
 Using direct GPIO-pins
 <table>
     <tr>Wiring diagram
-      <td><img src="./doc/pet_ros2_LED0..LED4_wiring.png"height="400px"></td>
+      <td><img src="./doc/pet_ros2_LED0..LED4_wiring.png" height="350px"></td>
       <td></td>
     </tr>
 </table>
