@@ -23,14 +23,14 @@ LED0 = 26 # GPIO26 (Pin 37)
 def generate_launch_description():
     ld = LaunchDescription()
 
-    # Create one node for each LED[0..4]=5 on the panel.
-    led0_node = Node( 
+    # Launch a common node for the two buttons
+    buttons_node = Node( 
         package="pet_mk_viii",
         executable="pet_buttons_node"
     )
 
 
-    # Create one node for each LED[0..4]=5 on the panel.
+    # Launch one node for each LED[0..4]=5 on the panel.
     led0_node = Node( 
         package="pet_mk_viii",
         executable="pet_ledlights_node",
