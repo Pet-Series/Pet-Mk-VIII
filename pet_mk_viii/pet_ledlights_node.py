@@ -2,7 +2,7 @@
 # coding = utf-8
 ########################################################################################
 ## (c) https://github.com/Pet-Series
-##     https://github.com/Pet-Series/pet_ros2_lightbeacon_pkg
+##     https://github.com/Pet-Series/Pet-Mk-VIII
 ##
 ## Maintainer: stefan.kull@gmail.com
 ## The MIT License (MIT)
@@ -12,22 +12,22 @@
 ##
 ## Behaviour: 
 ##   1) Once: Read/Set all the parameters 
-##   2) Repeatedly: Subscribe ROS2-topics for "/panel_led0...4" 
+##   2) Repeatedly: Subscribe ROS2-topics for "/led0...4" 
 ##   3) Repeatedly: Switch on/off corresponding LED
 ##
 ## Prerequisite   : Linux/Ubuntu vs. Hardware
 ##   Hardware/SBC   : Raspberry Pi 4(Ubuntu)
 ##   Hardware/Light : 5x (LED + 1KΩ)
 ##            +--------+--------+
-##        ----+ GPIO05 | LED0   +-----
+##        ----+ GPIO05 | LED4   +-----
 ##            +--------+--------+
-##        ----+ GPIO06 | LED1   +-----
+##        ----+ GPIO06 | LED3   +-----
 ##            +--------+--------+
 ##        ----+ GPIO13 | LED2   +-----
 ##            +--------+--------+
-##    RPi ----+ GPIO19 | LED3   +----- LED lights
+##    RPi ----+ GPIO19 | LED1   +----- LED lights
 ##            +--------+--------+
-##        ----+ GPIO26 | LED4   +-----
+##        ----+ GPIO26 | LED0   +-----
 ##            +--------+--------+
 ##        ----+ GND    | Common +-----
 ##            +--------+--------+
@@ -36,13 +36,15 @@
 ##   $ sudo apt install python3-pip
 ##   $ sudo apt-get install python3-rpi.gpio
 ##
-## Launch sequence (only one):
-##   1) $ ros2 run pet-mk-viii pet_ledlights_node 
-##        [INFO] [1648473699.905946642] [LedLightNode]: LedLightNode has started 'led1' at GPIO-pin: 6
-##   2) $ ros2 topic pub /panel_led_3 std_msgs/msg/Bool "data: True" -1
-##      $ ros2 topic pub /panel_led_3 std_msgs/msg/Bool "data: False" -1
+## Launch sequence (only one - Default is "/led1"):
+##   0) $ source ./install/setup.bash
+##   1) $ ros2 run pet_mk_viii pet_ledlights_node 
+##        [INFO] [1674319609.895771842] [LedLightNode]: LedLightNode has started 'led1' at GPIO-pin: 19
+##   2) $ ros2 topic pub /led1 std_msgs/msg/Bool "data: True"  -1
+##      $ ros2 topic pub /led1 std_msgs/msg/Bool "data: False" -1
 ##
 ## Launch sequence (all 5 LED's):
+##   0) $ source ./install/setup.bash
 ##   1) $ ros2 launch pet_mk_viii panel_led[0..4]_subscribers.launch.py
 ##        [pet_ledlights_node-4] [INFO]: LedLightNode has started 'panel_led_3' at GPIO-pin: 19
 ##        [pet_ledlights_node-3] [INFO]: LedLightNode has started 'panel_led_2' at GPIO-pin: 13
@@ -75,11 +77,11 @@ import signal
 from time import *
 
 GPIO.setmode(GPIO.BCM) # GPIO pin numbering
-LED4 =  5 # GPIO05 (Pin 29)
-LED3 =  6 # GPIO06 (Pin 31)
-LED2 = 13 # GPIO13 (Pin 33)
-LED1 = 19 # GPIO19 (Pin 35)
-LED0 = 26 # GPIO26 (Pin 37)
+LED4 =  5 # GPIO05 (Pin 29) <- ROS2 Topic "/led4"
+LED3 =  6 # GPIO06 (Pin 31) <- ROS2 Topic "/led3"
+LED2 = 13 # GPIO13 (Pin 33) <- ROS2 Topic "/led2"
+LED1 = 19 # GPIO19 (Pin 35) <- ROS2 Topic "/led1"
+LED0 = 26 # GPIO26 (Pin 37) <- ROS2 Topic "/led0"
 
 class LedLightNode(Node): 
     '''

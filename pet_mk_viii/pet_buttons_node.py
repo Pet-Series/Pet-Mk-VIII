@@ -16,7 +16,7 @@
 ## Host: Raspberry Pi 4(Ubuntu) via I2C
 ##
 ## Launch sequence:
-## 1) $ ros2 run pet_mk_viii_joystick pet_buttons_node.py 
+## 1) $ ros2 run pet_mk_viii pet_buttons_node.py 
 ## 2) $ ros2 topic echo /main_switch
 ##    $ ros2 topic echo /joystick_button
 ##

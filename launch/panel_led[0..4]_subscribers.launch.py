@@ -1,6 +1,6 @@
 ########################################################################################
 # (c) https://github.com/Pet-Series
-#     https://github.com/Pet-Series/pet_ros2_lightbeacon_pkg
+#     https://github.com/Pet-Series/Pet-Mk-VIII
 #
 # Maintainer: stefan.kull@gmail.com
 # The MIT License (MIT)
