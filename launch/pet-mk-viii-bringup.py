@@ -29,7 +29,6 @@ def generate_launch_description():
         executable="pet_buttons_node"
     )
 
-
     # Launch one node for each LED[0..4]=5 on the panel.
     led0_node = Node( 
         package="pet_mk_viii",
