@@ -77,6 +77,7 @@ def generate_launch_description():
     )
 
     # Expose nodes
+    ld.add_action(buttons_node)
     ld.add_action(led0_node)
     ld.add_action(led1_node)
     ld.add_action(led2_node)
