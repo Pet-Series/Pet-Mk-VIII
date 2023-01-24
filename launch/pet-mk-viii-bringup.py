@@ -14,11 +14,11 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
-LED4 =  5 # GPIO05 (Pin 29)
-LED3 =  6 # GPIO06 (Pin 31)
-LED2 = 13 # GPIO13 (Pin 33)
-LED1 = 19 # GPIO19 (Pin 35)
-LED0 = 26 # GPIO26 (Pin 37)
+LED4 =  5 # GPIO05 (Pin 29) for the pet_ledlights_node
+LED3 =  6 # GPIO06 (Pin 31) for the pet_ledlights_node
+LED2 = 13 # GPIO13 (Pin 33) for the pet_ledlights_node
+LED1 = 19 # GPIO19 (Pin 35) for the pet_ledlights_node
+LED0 = 26 # GPIO26 (Pin 37) for the pet_ledlights_node
 
 def generate_launch_description():
     ld = LaunchDescription()
