@@ -6,6 +6,7 @@
 #  --rm \
 #  --network=host \
 #  --privileged \
+#  --volume="/home/pi/ws_ros2:/home/pet/ws_ros2:rw" \
 # pet-mk-viii
 #----------------------
 FROM  kullken/ros2_arm64v8:pet-base-humble 
@@ -22,27 +23,27 @@ SHELL ["/bin/bash", "-c"]
 
 RUN echo 'export PS1="${debian_chroot:+($debian_chroot)}\[\033[01;37;44m\]🐳${DOCKERPROMPT}\[\033[00m\]_\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\\$ "' >> /home/pet/.bashrc 
 
+# Using  '--volume="/home/pi/ws_ros2:/home/pet/ws_ros2:rw" \' insted...
 # Create ROS2 work space
 USER ${DOCKERUSER}
-RUN mkdir --parent ${HOMEDIR}/ws_ros2/src
-WORKDIR ${HOMEDIR}/ws_ros2/src
+# RUN mkdir --parent ${HOMEDIR}/ws_ros2/src
+# WORKDIR ${HOMEDIR}/ws_ros2/src
 
-RUN git config --global user.email "stefan.kull@gmail.com"
-RUN git config --global user.name "SeniorKullken"
-RUN git clone https://github.com/Pet-Series/Pet-Mk-VIII.git 
 
-WORKDIR ${HOMEDIR}/ws_ros2
-RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
+# RUN git config --global user.email "stefan.kull@gmail.com"
+# RUN git config --global user.name "SeniorKullken"
+# RUN git clone https://github.com/Pet-Series/Pet-Mk-VIII.git
+
+# WORKDIR ${HOMEDIR}/ws_ros2
+# RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
 RUN echo 'source ${HOMEDIR}/ws_ros2/install/setup.bash' >> /home/pet/.bashrc 
 
 # Bring up ROS2 nodes
-WORKDIR ${HOMEDIR}/ws_ros2
-RUN mkdir --parent ./src/Pet-Mk-VIII/docker/pet-mk-viii-runtime
+RUN mkdir --parent ${HOMEDIR}/src/Pet-Mk-VIII/docker/pet-mk-viii-runtime
 COPY ./entrypoint.sh  ./src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh
 USER root
-RUN chmod +x ./src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh
+RUN chmod +x ${HOMEDIR}/src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh
 USER ${DOCKERUSER}
 
 ENTRYPOINT ["/home/pet/ws_ros2/src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh"]
-# launch ros package
-# CMD ["ros2", "launch", "pet_mk_viii", "pet-mk-viii-bribgup.py"]
+CMD ["ros2", "launch", "pet_mk_viii", "pet-mk-viii-bringup.launch.py"]

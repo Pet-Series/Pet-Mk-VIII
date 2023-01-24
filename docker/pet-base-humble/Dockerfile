@@ -49,7 +49,7 @@ RUN sudo apt update -y && apt -y install neofetch && echo 'neofetch' >> /home/pe
 
 # Install Python3 extentions for I2C, GPIO and AD-converter
 USER ${DOCKERUSER}
-RUN pip3 install RPi.GPIO Adafruit_ADS1x15 board adafruit-blinka lgpio
+RUN pip3 install RPi.GPIO Adafruit_ADS1x15 board adafruit-blinka lgpio smbus2
 # WARNING: The scripts pyserial-miniterm and pyserial-ports are installed in '/home/pet/.local/bin' which is not on PATH.
 
 # Install VisualCode
