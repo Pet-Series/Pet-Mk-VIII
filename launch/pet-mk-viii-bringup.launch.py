@@ -38,7 +38,7 @@ def generate_launch_description():
         parameters=[
             {"ros_topic_twist":         'twist/cmd_vel'},
             {'ros_topic_twist_stamped': 'twist_stamped/cmd_vel'},
-            {'ros_topic_raw':           'raw/joystick'},
+            {'ros_topic_raw':           'raw/joystick'}
         ]
     )
 
@@ -89,7 +89,7 @@ def generate_launch_description():
     )
 
     # Expose nodes
-    ld.add_action(joystick_node)
+    (joystick_node)
     ld.add_action(buttons_node)
     ld.add_action(led0_node)
     ld.add_action(led1_node)
