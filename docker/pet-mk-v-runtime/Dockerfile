@@ -26,15 +26,15 @@ USER ${DOCKERUSER}
 RUN echo 'export PS1="${debian_chroot:+($debian_chroot)}\[\033[01;37;44m\]🐳${DOCKERPROMPT}\[\033[00m\]_\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\\$ "' >> ${HOMEDIR}/.bashrc 
 
 # Add setup.bash to ~/.bashrc
-RUN echo 'source ${HOMEDIR}/ws_ros2/install/setup.bash' >> ${HOMEDIR}.bashrc 
+RUN echo 'source ${HOMEDIR}/ws_ros2/install/setup.bash' >> ${HOMEDIR}/.bashrc 
 
 # Bring up ROS2 nodes
-RUN mkdir --parent ${HOMEDIR}/src/Pet-Mk-V/docker/pet-mk-v-runtime
-COPY ./entrypoint.sh  ${HOMEDIR}/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh
+RUN mkdir --parent    ${HOMEDIR}/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime
+COPY ./entrypoint.sh  ${HOMEDIR}/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh
 USER root
-RUN chmod +x ${HOMEDIR}/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh
+RUN chmod +x          ${HOMEDIR}/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh
 USER ${DOCKERUSER}
 
-ENTRYPOINT ["/home/pet/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh"]
+# ENTRYPOINT ["/home/pet/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh"]
 # CMD ["ros2", "launch", "pet_mk_v", "pet-mk-v-bringup.launch.py"]
-CMD ["shell"]
+# CMD ["shell"]
