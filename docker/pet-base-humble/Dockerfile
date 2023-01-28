@@ -61,4 +61,4 @@ RUN pip3 install RPi.GPIO Adafruit_ADS1x15 board adafruit-blinka lgpio smbus2
 #RUN echo deb [arch=arm64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main | tee /etc/apt/sources.list.d/vscode.list
 #RUN apt update -y && apt install -y code
 USER ${DOCKERUSER}
-RUN echo "'alias humble='source /opt/ros/humble/setup.bash'" >> /home/pet/.bashrc
+RUN echo "alias humble='source /opt/ros/humble/setup.bash'" >> /home/pet/.bashrc
