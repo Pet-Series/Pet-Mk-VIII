@@ -1,6 +1,5 @@
 #!/bin/bash
-# Run docker image
-#  --entrypoint "/bin/bash" \
+# Run docker image from https://hub.docker.com/repository/docker/kullken/ros2_arm64v8
 docker run \
  -it \
  --rm \
