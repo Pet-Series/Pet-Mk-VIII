@@ -1,6 +1,8 @@
 #!/bin/bash
 # Run docker image
-docker run --interactive \
+#  --entrypoint "/bin/bash" \
+docker run \
+ -it \
  --rm \
  --network=host \
  --privileged \

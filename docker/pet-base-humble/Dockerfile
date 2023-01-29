@@ -62,3 +62,7 @@ RUN pip3 install RPi.GPIO Adafruit_ADS1x15 board adafruit-blinka lgpio smbus2
 #RUN apt update -y && apt install -y code
 USER ${DOCKERUSER}
 RUN echo "alias humble='source /opt/ros/humble/setup.bash'" >> /home/pet/.bashrc
+
+# Setup exit condtions
+CMD ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "-c"]
