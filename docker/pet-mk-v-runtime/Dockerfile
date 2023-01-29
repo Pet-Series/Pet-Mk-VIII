@@ -9,6 +9,8 @@
 #  --volume="/home/pi/ws_ros2:/home/pet/ws_ros2:rw" \
 # pet-mk-v
 #----------------------
+# Prerequisit: Docker host must clone https://github.com/Pet-Series/Pet-Mk-VIII.git
+#
 FROM  kullken/ros2_arm64v8:pet-base-humble 
 ENV DOCKERUSER="pet"
 ENV HOMEDIR="/home/${DOCKERUSER}"
@@ -28,13 +30,13 @@ RUN echo 'export PS1="${debian_chroot:+($debian_chroot)}\[\033[01;37;44m\]🐳${
 # Add setup.bash to ~/.bashrc
 RUN echo 'source ${HOMEDIR}/ws_ros2/install/setup.bash' >> ${HOMEDIR}/.bashrc 
 
-# Bring up ROS2 nodes
-RUN mkdir --parent    ${HOMEDIR}/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime
-COPY ./entrypoint.sh  ${HOMEDIR}/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh
+# Put the entrypoint.sh script in the right place...
+RUN mkdir --parent    ${HOMEDIR}/ws_ros2/src/Pet-Mk-VIII/docker/pet-mk-v-runtime/entrypoint.sh
+COPY ./entrypoint.sh  ${HOMEDIR}/ws_ros2/src/Pet-Mk-VIII/docker/pet-mk-v-runtime/entrypoint.sh
 USER root
-RUN chmod +x          ${HOMEDIR}/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh
+RUN chmod +x          ${HOMEDIR}/ws_ros2/src/Pet-Mk-VIII/docker/pet-mk-v-runtime/entrypoint.sh
 USER ${DOCKERUSER}
 
-# ENTRYPOINT ["/home/pet/ws_ros2/src/Pet-Mk-V/docker/pet-mk-v-runtime/entrypoint.sh"]
-# CMD ["ros2", "launch", "pet_mk_v", "pet-mk-v-bringup.launch.py"]
-# CMD ["shell"]
+# As default - Bring Bash-shell
+CMD ["/bin/bash"]
+ENTRYPOINT ["/home/pet/ws_ros2/src/Pet-Mk-VIII/docker/pet-mk-v-runtime/entrypoint.sh"]
