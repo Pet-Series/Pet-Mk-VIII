@@ -1,5 +1,5 @@
-# Base Docker Image
-# 1) ROS Humble
+# Base layer for 
+# 1) Base Docker Image ROS2 Humble ARM64
 # 2) Create Docker user "pet" with access to USB, I2C and GPIO
 # 3) Add "apt" package
 # 4) Add "pip3" package
@@ -17,6 +17,7 @@
 # https://hub.docker.com/r/arm64v8/ros/tags
 # https://hub.docker.com/r/arm64v8/ros/tags?page=1&name=humble
 FROM arm64v8/ros:humble-ros-base-jammy
+
 ENV DOCKERUSER="pet"
 ENV HOMEDIR="/home/${DOCKERUSER}"
 ENV DOCKERPROMPT="Pet-Base-Humble"
@@ -27,12 +28,26 @@ LABEL version="1.0"
 
 SHELL ["/bin/bash", "-c"]
 
-# Setup Docker user
-RUN groupadd --force --gid 1001 gpio
-RUN groupadd --force --gid 139 i2c
-RUN groupadd --force --gid 20 dialout
-RUN groupadd --force --gid 27 sudo
-RUN useradd --uid 1000 --shell /bin/bash --home-dir ${HOMEDIR} --create-home --user-group --groups gpio,i2c,dialout,sudo ${DOCKERUSER}
+# Setup Docker user "pet" for access to i2c and GPIO
+# Support Ubuntu 20.04 using group: dailout
+# Support RaspianOS using groups:   spi,i2c,gpio
+# gpio => ls -la /dev/gpiomem
+# i2c  => ls -la /dev/i2c*
+# spi  => ls -l1 /dev/spi*
+RUN groupadd --force --gid 997 gpio
+RUN groupadd --force --gid 998 i2c
+RUN groupadd --force --gid 999 spi
+RUN groupadd --force --gid  20 dialout
+RUN groupadd --force --gid  27 sudo
+
+RUN useradd \
+    --uid 1000 \
+    --shell /bin/bash \
+    --home-dir ${HOMEDIR} \
+    --create-home \
+    --user-group \
+    --groups gpio,i2c,spi,dialout,sudo \
+    ${DOCKERUSER}
 RUN echo "${DOCKERUSER}:d0cker" | chpasswd
 USER ${DOCKERUSER}
 WORKDIR ${HOMEDIR}
@@ -44,12 +59,17 @@ USER root
 RUN apt update -y && apt -y install i2c-tools python3-pip
 
 # Install Neofetch
-USER root
 RUN sudo apt update -y && apt -y install neofetch && echo 'neofetch' >> /home/pet/.bashrc 
 
 # Install Python3 extentions for I2C, GPIO and AD-converter
 USER ${DOCKERUSER}
-RUN pip3 install RPi.GPIO Adafruit_ADS1x15 board adafruit-blinka lgpio smbus2
+RUN pip3 install \
+        RPi.GPIO \
+        Adafruit_ADS1x15 \
+        board \
+        adafruit-blinka \
+        lgpio \
+        smbus2
 # WARNING: The scripts pyserial-miniterm and pyserial-ports are installed in '/home/pet/.local/bin' which is not on PATH.
 
 # Install VisualCode
