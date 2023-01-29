@@ -9,6 +9,8 @@
 #  --volume="/home/pi/ws_ros2:/home/pet/ws_ros2:rw" \
 # pet-mk-viii
 #----------------------
+# Prerequisit: Docker host must clone https://github.com/Pet-Series/Pet-Mk-VIII.git
+#
 FROM  kullken/ros2_arm64v8:pet-base-humble 
 ENV DOCKERUSER="pet"
 ENV HOMEDIR="/home/${DOCKERUSER}"
@@ -20,30 +22,21 @@ LABEL version="1.0"
 
 SHELL ["/bin/bash", "-c"]
 
+USER ${DOCKERUSER}
 
+# Add custom shell-prompt for this base-image to ~/.bashrc
 RUN echo 'export PS1="${debian_chroot:+($debian_chroot)}\[\033[01;37;44m\]🐳${DOCKERPROMPT}\[\033[00m\]_\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\\$ "' >> /home/pet/.bashrc 
 
-# Using  '--volume="/home/pi/ws_ros2:/home/pet/ws_ros2:rw" \' insted...
-# Create ROS2 work space
-USER ${DOCKERUSER}
-# RUN mkdir --parent ${HOMEDIR}/ws_ros2/src
-# WORKDIR ${HOMEDIR}/ws_ros2/src
-
-
-# RUN git config --global user.email "stefan.kull@gmail.com"
-# RUN git config --global user.name "SeniorKullken"
-# RUN git clone https://github.com/Pet-Series/Pet-Mk-VIII.git
-
-# WORKDIR ${HOMEDIR}/ws_ros2
-# RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
+# Add setup.bash to ~/.bashrc
 RUN echo 'source ${HOMEDIR}/ws_ros2/install/setup.bash' >> /home/pet/.bashrc 
 
-# Bring up ROS2 nodes
+# Put the entrypoint.sh script in the right place...
 RUN mkdir --parent ${HOMEDIR}/src/Pet-Mk-VIII/docker/pet-mk-viii-runtime
 COPY ./entrypoint.sh  ./src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh
 USER root
 RUN chmod +x ${HOMEDIR}/src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh
 USER ${DOCKERUSER}
 
-ENTRYPOINT ["/home/pet/ws_ros2/src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh"]
+# As default - Launch ROS2 nodes
 CMD ["ros2", "launch", "pet_mk_viii", "pet-mk-viii-bringup.launch.py"]
+ENTRYPOINT ["/home/pet/src/Pet-Mk-VIII/docker/pet-mk-viii-runtime/entrypoint.sh"]
