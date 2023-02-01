@@ -69,7 +69,8 @@ RUN pip3 install \
         board \
         adafruit-blinka \
         lgpio \
-        smbus2
+        smbus2 \
+        gpiozero
 # WARNING: The scripts pyserial-miniterm and pyserial-ports are installed in '/home/pet/.local/bin' which is not on PATH.
 
 # Install VisualCode
@@ -81,7 +82,8 @@ RUN pip3 install \
 #RUN echo deb [arch=arm64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main | tee /etc/apt/sources.list.d/vscode.list
 #RUN apt update -y && apt install -y code
 USER ${DOCKERUSER}
-RUN echo "alias humble='source /opt/ros/humble/setup.bash'" >> /home/pet/.bashrc
+RUN echo "alias humble=    'source /opt/ros/humble/setup.bash'" >> /home/pet/.bashrc
+RUN echo "alias pet_source='source ${DOCKERUSER}/ws_ros2/install/setup.bash'" >> /home/pet/.bashrc
 
 # Setup exit condtions
 CMD ["/bin/bash"]
