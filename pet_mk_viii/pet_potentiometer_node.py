@@ -69,16 +69,16 @@ class PotentiometerPublisher(Node):
         super().__init__("PotentiometerPublisher_node")
         
         # Set default topic-name for publishing. Accessed via ROS Parameters...
-        self.declare_parameter( 'ros_topic_p0', 'potentiometer_p0', ParameterDescriptor(description='ROS-topc name. Publish posotion of potentiometer [default "potentiometer_p0"]') )
+        self.declare_parameter( 'ros_topic_p0', 'potentiometer_p0', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p0"]') )
         self.ROS_TOPIC_P0 = self.get_parameter('ros_topic_p0').get_parameter_value().string_value
 
-        self.declare_parameter( 'ros_topic_p1', 'potentiometer_p1', ParameterDescriptor(description='ROS-topc name. Publish posotion of potentiometer [default "potentiometer_p1"]') )
+        self.declare_parameter( 'ros_topic_p1', 'potentiometer_p1', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p1"]') )
         self.ROS_TOPIC_P1 = self.get_parameter('ros_topic_p1').get_parameter_value().string_value
 
-        self.declare_parameter( 'ros_topic_p2', 'potentiometer_p2', ParameterDescriptor(description='ROS-topc name. Publish posotion of potentiometer [default "potentiometer_p2"]') )
+        self.declare_parameter( 'ros_topic_p2', 'potentiometer_p2', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p2"]') )
         self.ROS_TOPIC_P2 = self.get_parameter('ros_topic_p2').get_parameter_value().string_value
 
-        self.declare_parameter( 'ros_topic_p3', 'potentiometer_p3', ParameterDescriptor(description='ROS-topc name. Publish posotion of potentiometer [default "potentiometer_p3"]') )
+        self.declare_parameter( 'ros_topic_p3', 'potentiometer_p3', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p3"]') )
         self.ROS_TOPIC_P3 = self.get_parameter('ros_topic_p3').get_parameter_value().string_value
 
         # Set default ADC-I2C address. Accessed via ROS Parameters...
