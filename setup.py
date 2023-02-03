@@ -18,7 +18,7 @@ setup(
     zip_safe=True,
     maintainer='seniorKullken',
     maintainer_email='stefan.kull@gmail.com',
-    description='Main folder for Pet-Mk.IV - The Dashboard',
+    description='Main folder for Pet-Mk.VIII - The Dashboard',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
