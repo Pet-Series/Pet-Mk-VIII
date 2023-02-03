@@ -1,4 +1,5 @@
-# Launch with: $ docker compose run ros2
+# Launch with: $ docker compose up -d
+# $ docker compose run ros2
 # Launch in background with: $ docker compose up -d
 version: "3"
 services:
@@ -20,4 +21,5 @@ services:
     tty: true        # docker run -t
     # restart: always
     # restart: unless-stopped
+    command: [ "ros2", "launch", "pet_mk_v", "pet-mk-v-bringup.launch.py"]
     
