@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding = utf-8
 import RPi.GPIO as GPIO
 from time import sleep
 import sys
