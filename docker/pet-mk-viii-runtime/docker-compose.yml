@@ -1,0 +1,30 @@
+# Launch with: $ docker compose up -d
+# Connect shell by: $ docker exec -it pet-mk-viii-runtime_container bash
+version: "3"
+services:
+  ros2:
+    image: kullken/ros2_arm64v8:pet-mk-v-runtime
+    container_name: pet-mk-viii-runtime_container
+    # privileged: true
+    devices:
+    #- "/dev/ttyUSB0:/dev/ttyUSB0"     # USB
+    - "/dev/gpiomem:/dev/gpiomem"     # GPIO
+    - "/dev/i2c-1:/dev/i2c-1"         # I2C-1
+    #- "/dev/i2c-2:/dev/i2c-2"         # I2C-2
+    - "/dev/spidev0.0:/dev/spidev0.0" # SPI.0
+    - "/dev/spidev0.1:/dev/spidev0.1" # SPI.1
+    network_mode: "host"
+    #networks:
+    #- hostnet
+    volumes:
+    - /home/pi/ws_ros2:/home/pet/ws_ros2:rw
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    # restart: always
+    # restart: unless-stopped
+    command: [ "ros2", "launch", "pet_mk_viii", "pet-mk-viii-bringup.launch.py"]
+
+# networks:
+#   hostnet:
+#     external: true
+#     name: host    

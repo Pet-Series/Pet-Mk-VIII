@@ -31,14 +31,16 @@ SHELL ["/bin/bash", "-c"]
 # Setup Docker user "pet" for access to i2c and GPIO
 # Support Ubuntu 20.04 using group: dailout
 # Support RaspianOS using groups:   spi,i2c,gpio
-# gpio => ls -la /dev/gpiomem
-# i2c  => ls -la /dev/i2c*
-# spi  => ls -l1 /dev/spi*
+# gpio => ls -la /dev/gpiomem {Acces via group 'dialout' or 'gpio'}
+# i2c  => ls -la /dev/i2c*    {Acces via group 'dialout' or 'i2c'}
+# spi  => ls -la /dev/spi*    {Acces via group 'dialout' or 'spi'}
+# USB  => ls -la /dev/ttyUSB* {Acces via group 'dialout'}
 RUN groupadd --force --gid 997 gpio
 RUN groupadd --force --gid 998 i2c
 RUN groupadd --force --gid 999 spi
 RUN groupadd --force --gid  20 dialout
 RUN groupadd --force --gid  27 sudo
+RUN groupadd --force --gid  44 video
 
 RUN useradd \
     --uid 1000 \
@@ -46,7 +48,7 @@ RUN useradd \
     --home-dir ${HOMEDIR} \
     --create-home \
     --user-group \
-    --groups gpio,i2c,spi,dialout,sudo \
+    --groups gpio,i2c,spi,dialout,sudo,video \
     ${DOCKERUSER}
 RUN echo "${DOCKERUSER}:d0cker" | chpasswd
 USER ${DOCKERUSER}
@@ -57,9 +59,11 @@ RUN echo 'export PS1="${debian_chroot:+($debian_chroot)}\[\033[01;37;44m\]🐳${
 # Install required software i2c
 USER root
 RUN apt update -y && apt -y install i2c-tools python3-pip
+##    && rm -rf /var/lib/apt/lists/*
 
 # Install Neofetch
 RUN sudo apt update -y && apt -y install neofetch && echo 'neofetch' >> /home/pet/.bashrc 
+##    && rm -rf /var/lib/apt/lists/*
 
 # Install Python3 extentions for I2C, GPIO and AD-converter
 USER ${DOCKERUSER}
@@ -70,7 +74,8 @@ RUN pip3 install \
         adafruit-blinka \
         lgpio \
         smbus2 \
-        gpiozero
+        gpiozero \
+        rpi_lcd
 # WARNING: The scripts pyserial-miniterm and pyserial-ports are installed in '/home/pet/.local/bin' which is not on PATH.
 
 # Install VisualCode
@@ -82,8 +87,8 @@ RUN pip3 install \
 #RUN echo deb [arch=arm64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main | tee /etc/apt/sources.list.d/vscode.list
 #RUN apt update -y && apt install -y code
 USER ${DOCKERUSER}
-RUN echo "alias humble=    'source /opt/ros/humble/setup.bash'" >> /home/pet/.bashrc
-RUN echo "alias pet_source='source ${DOCKERUSER}/ws_ros2/install/setup.bash'" >> /home/pet/.bashrc
+RUN echo "alias humble='source /opt/ros/humble/setup.bash'" >> /home/pet/.bashrc
+RUN echo "alias pet_source='source /home/pet/ws_ros2/install/setup.bash'" >> /home/pet/.bashrc
 
 # Setup exit condtions
 CMD ["/bin/bash"]
