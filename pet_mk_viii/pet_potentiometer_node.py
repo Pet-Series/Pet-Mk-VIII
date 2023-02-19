@@ -1,37 +1,40 @@
-#!/usr/bin/env python3'
+#!/usr/bin/env python3
 # coding = utf-8
 ########################################################################################
+## (c) https://github.com/Pet-Series
+##     https://github.com/Pet-Series/Pet-Mk-VIII
 ##
 ## Maintainer: stefan.kull@gmail.com
-## Inspired by: https://github.com/somervda/ourbotmanager_ros.git
+## The MIT License (MIT)
+##
+## Target platform: Pet-Mk.VIII (aka. the "Dashboard")
 ## 
-## Input: Analog potentiometer 1 + 2 + 3 (+4 )
-## Output: micro-ROS node (ROS2) that publish topic /cmd_vel with msg.type twist_stamped
-##    Angular = X-axis = Pull stick Left/Right
-##    Linear  = Y-axis = Pull stick Up/Down
-##    Twist   = Z-axis = Turn/Twist stick  (Not used right now)
+## Input: Analog potentiometer chn. 1 + 2 + 3 (+4 not used at the moment)
+## Output: ROS2 node that publish topic potentiometer_p... with msg.type Int32
 ##
 ## Behaviour:
-## 1) Once: Read/Set all the parameters
-## 2) Repeatedly: Read analog joystick via ADC
-## 3) Repeatedly: Transform indata to a +/-100% values
-## 4) Repeatedly: Map where the stick are => Depending om location, then adjust behivaiur.
-## 5) Repeatedly: Publish ros-topic
+##   1) Once: Read/Set all the parameters
+##   2) Repeatedly: Read analog potentiometer via ADC as raw-output
+##   3) Repeatedly: Transform the raw-ADC-output to a value bettween -100 and +100 and number of distict values set by the granularity
+##   4) Repeatedly: Publish ros-topic
 ##
 ## Prerequisite:
-## $ sudo apt install i2c-tools
-## $ sudo apt install python3-pip
-## $ sudo pip3 install smbus2
-## $ sudo pip3 install adafruit-ads1x15
-## $ sudo i2cdetect -y 1
-## $ sudo chmod a+rw /dev/i2c-1
+##   $ sudo apt install i2c-tools
+##   $ sudo i2cdetect -y 1
+##   $ sudo apt install python3-pip
+##   $ sudo pip3 install smbus2
+##   $ sudo pip3 install adafruit-ads1x15
+##   $ sudo chmod a+rw /dev/i2c-1
 ##
-## Hardware: KY-053 Analog Digital Converter (ADS1115, 16-bit) via default I2C adr.=0x48
-## Hardware: Joystick with analog 10K resistors for X, Y and Z
-## Host: Raspberry Pi 4(Ubuntu) via I2C
+## Hardware: KY-053 ADC "Analog Digital Converter" (ADS1115, 16-bit) via default I2C adr.=0x49
+## Hardware: 3x Analog potentiometer that has about 10K resistors
+## Hardware/SBC: Raspberry Pi 3-4 (Ubuntu or Raspian OS) via I2C
 ##
 ## Launch sequence:
-## 1) $ ros2 run pet_mk_viii_joystick pet_potentiometer_node.py 
+##   1) $ ros2 run pet_mk_viii pet_potentiometer_node.py
+##   2) $ ros2 topic echo /potentiometer_p0
+##      $ ros2 topic echo /potentiometer_p2
+##      $ ros2 topic echo /potentiometer_p3
 ##
 
 # TODO: Get rid of time.sleep() with something more real time/concurrent and ROS2 friendly way of wait...

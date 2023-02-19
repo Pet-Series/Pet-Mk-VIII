@@ -1,24 +1,35 @@
-#!/usr/bin/env python3'
+#!/usr/bin/env python3
 # coding = utf-8
 ########################################################################################
+## (c) https://github.com/Pet-Series
+##     https://github.com/Pet-Series/Pet-Mk-VIII
 ##
 ## Maintainer: stefan.kull@gmail.com
-## 
+## The MIT License (MIT)
+##
+## Target platform: Pet-Mk.VIII (aka. the "Dashboard")
+##
 ## Input: Switches/Button that is wired to each GPIO-pin
 ## Output: ROS2 node that publish topic 
 ##    joystick_button = HIGH/LOW  (default LOW)
 ##    main_switch     = HIGH/LOW  (HIGH when activeated)
 ##
-## Prerequisite:
-## $ sudo apt-get install python3-rpi.gpio
+## Behaviour:
+##   1) Once: Initiate GPIO
+##   2) Repeatedly when pressed/released: Read input from GPIO
+##   3) Repeatedly when pressed/released: Publish input as ROS2 topic
 ##
-## Hardware: Switch/Button wired to an GPIO-pin
-## Host: Raspberry Pi 4(Ubuntu) via I2C
+## Prerequisite:
+##   $ sudo apt-get install python3-rpi.gpio
+##
+## Hardware: Switch/Button#1 wired to GPIO-pin 12
+## Hardware: Switch/Button#1 wired to GPIO-pin 22
+## Hardware/SBC: Raspberry Pi 3-4 (Ubuntu or Raspian OS)
 ##
 ## Launch sequence:
-## 1) $ ros2 run pet_mk_viii pet_buttons_node.py 
-## 2) $ ros2 topic echo /main_switch
-##    $ ros2 topic echo /joystick_button
+##   1) $ ros2 run pet_mk_viii pet_buttons_node.py 
+##   2) $ ros2 topic echo /main_switch
+##      $ ros2 topic echo /joystick_button
 ##
 
 # Import the ROS2-stuff
