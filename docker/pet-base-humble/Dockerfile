@@ -31,9 +31,10 @@ SHELL ["/bin/bash", "-c"]
 # Setup Docker user "pet" for access to i2c and GPIO
 # Support Ubuntu 20.04 using group: dailout
 # Support RaspianOS using groups:   spi,i2c,gpio
-# gpio => ls -la /dev/gpiomem
-# i2c  => ls -la /dev/i2c*
-# spi  => ls -l1 /dev/spi*
+# gpio => ls -l /dev/gpiomem
+# i2c  => ls -l /dev/i2c*
+# spi  => ls -l /dev/spi*
+# usb  => ls -l /dev/ttyUSB*
 RUN groupadd --force --gid 997 gpio
 RUN groupadd --force --gid 998 i2c
 RUN groupadd --force --gid 999 spi
