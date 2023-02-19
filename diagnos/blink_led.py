@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# coding = utf-8
 #  Blink an LED with the LGPIO library
 #  Uses lgpio library, compatible with kernel 5.11
 #  Author: William 'jawn-smith' Wilson
