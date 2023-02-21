@@ -19,16 +19,27 @@ Ubuntu is used as operating system.
       <td><img src="./doc/Pet-Mk.VIII_build_phase_8(pet_joystick_prototype).png" width="400px"></td>
     </tr>
 </table>
+
 <table>
     <tr>The dashboard just starting to take shape.
       <td><img src="./doc/Pet-Mk.VIII_build_phase_14(aluminium_panel).png" width="450px"></td>
       <td><img src="./doc/Pet-Mk.VIII_build_phase_16(oak_side_panels).png" height="260px"></td>
     </tr>
 </table>
+
 <table>
     <tr>Electrical installation is beginning to take place
       <td><img src="./doc/Pet-Mk.VIII_build_phase_17(RPi-bracket).png" width="400px"></td>
       <td><img src="./doc/Pet-Mk.VIII_build_phase_20(ADS1115).png" width="400px"></td>
+    </tr>
+</table>
+
+<table>
+    <tr>Mechanical & Electrical Done
+      <td>Exterior Done<br>
+      <img src="./doc/Pet-Mk.VIII_build_phase_23(ExteriorDone).png" height="350px"></td>
+      <td>Interior Done<br>
+      <img src="./doc/Pet-Mk.VIII_build_phase_22(InteriorDone).png" height="350px"></td>
     </tr>
 </table>
 
@@ -37,7 +48,7 @@ Ubuntu is used as operating system.
 Using Analog/Digital Converter ADS1115 via I2C (3 of 4 channels in use)<br>
 - 3 directions joystick with each a 10K potentiometer.
 
-For more information see https://github.com/Pet-Series/pet_ros2_joystick_pkg
+For more information see repo https://github.com/Pet-Series/pet_ros2_joystick_pkg
 <table>
     <tr>
       <td>Wiring diagram<br><img src="./doc/pet_ros2_joystick_wiring.png" height="350px"></td>
@@ -81,7 +92,8 @@ For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main
 </table>
 
 ## Module: Current & Voltage monitoring
-Using INA219 sensor via I2C-bus to measure internal voltage & current status for the Dashboard.
+Using INA219 sensor via I2C-bus to measure internal voltage & current status for the Dashboard.<br>
+For more information see repo https://github.com/Pet-Series/pet_ros2_currentsensor_ina219_pkg
 <table>
     <tr>
       <td>Wiring diagram<br><img src="./doc/pet_ros2_currentsensor(INA219)_wiring.png" height="400px"></td>
