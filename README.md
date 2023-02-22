@@ -37,9 +37,11 @@ Ubuntu is used as operating system.
 <table>
     <tr>Mechanical & Electrical Done
       <td>Exterior Done<br>
-      <img src="./doc/Pet-Mk.VIII_build_phase_23(ExteriorDone).png" height="350px"></td>
+      <img src="./doc/Pet-Mk.VIII_build_phase_23(ExteriorDone).png" width="800px"></td>
+    </tr>
+    <tr>
       <td>Interior Done<br>
-      <img src="./doc/Pet-Mk.VIII_build_phase_22(InteriorDone).png" height="350px"></td>
+      <img src="./doc/Pet-Mk.VIII_build_phase_22(InteriorDone).png" width="700px"></td>
     </tr>
 </table>
 
