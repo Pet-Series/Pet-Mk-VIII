@@ -17,7 +17,7 @@
 </table>
 
 # This dashboard should be able to... #
-1. Manually operate the Pet robbots (using the joystick).<br>...or any other ROS1/ROS2 bot controlled via topic cmd_vel (command velocity).
+1. Manually operate the various robots (using the joystick).<br>...or any other ROS1/ROS2 bot controlled via topic cmd_vel (command velocity).
 1. Launch ROS2 missions (using built in 7" touch display, keyboard and mouse)
 2. Patch/tune parameters via trim-potentiometers (as various PID-systems)
 3. Monitor in real time robot data (using RViz and RQT).
