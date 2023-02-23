@@ -3,32 +3,46 @@
 <h1 align="center">Welcome to the Pet-Mk-VIII repository</h1>
 <h1 align="center">The Robot Dashboard</h1>
 
-ROS repository in the https://github.com/Pet-Series Git-Organizations.</br>
-Containing multiply ROS1/ROS2-packages.
+# Pet series micro robots #
+<table>
+    <tr>
+        <td><img src="./doc/Pet-Mk.VIII_build_phase_23(ExteriorDone).png" width="500px"></td>
+        <td>The main objective/scope for this repository is to manage the part of the software (and parameter settings) 
+            that is unique for this Pet Mark VIII (eight) robot. A.k.a "The Dashboard".<br>
+            <br>
+            ROS repository in the https://github.com/Pet-Series Git-Organizations.<br>
+            Containing multiply ROS1/ROS2-packages.
+        </td>
+    </tr>
+</table>
 
-# Software/Setup Pet series micro robots #
-The main objective/scope for this repository is to control the part of the software (and parameter settings) that is unique for this Pet Mark VIII (eight) robot. A.k.a "The Dashboard".
-
-ROS2 (Robot Operating System v2) is used as middleware.
-Ubuntu is used as operating system.
+# This dashboard should be able to... #
+1. Manually operate the Pet robbots (using the joystick).<br>...or any other ROS1/ROS2 bot controlled via topic cmd_vel (command velocity).
+1. Launch ROS2 missions (using built in 7" touch display, keyboard and mouse)
+2. Patch/tune parameters via trim-potentiometers (as various PID-systems)
+3. Monitor in real time robot data (using RViz and RQT).
+4. Generic GPIO-connected LED's (most for fun🤪).
+5. Generic GPIO-connected buttons (trig, launch ROS2-tasks...) 
+6. Last minute debugging/patching😇 using the dashboard as developing terminal (using ssh, xRDP or VisualCode)
 
 # The journey is the goal
+The goul with our work is "It should be fun" and "The journey is the goal".
 <table>
-    <tr>Pet-Mk.VIII early iterations
+    <tr>History: Pet-Mk.VIII early iterations
       <td><img src="./doc/Pet-Mk.VIII_build_phase_04(design_iterations).png" width="400px"></td>
       <td><img src="./doc/Pet-Mk.VIII_build_phase_8(pet_joystick_prototype).png" width="400px"></td>
     </tr>
 </table>
 
 <table>
-    <tr>The dashboard just starting to take shape.
+    <tr>History: The dashboard just starting to take shape.
       <td><img src="./doc/Pet-Mk.VIII_build_phase_14(aluminium_panel).png" width="450px"></td>
       <td><img src="./doc/Pet-Mk.VIII_build_phase_16(oak_side_panels).png" height="260px"></td>
     </tr>
 </table>
 
 <table>
-    <tr>Electrical installation is beginning to take place
+    <tr>History: Electrical installation is beginning to take place
       <td><img src="./doc/Pet-Mk.VIII_build_phase_17(RPi-bracket).png" width="400px"></td>
       <td><img src="./doc/Pet-Mk.VIII_build_phase_20(ADS1115).png" width="400px"></td>
     </tr>
@@ -37,16 +51,24 @@ Ubuntu is used as operating system.
 <table>
     <tr>Mechanical & Electrical Done
       <td>Exterior Done<br>
-      <img src="./doc/Pet-Mk.VIII_build_phase_23(ExteriorDone).png" width="800px"></td>
+      <img src="./doc/Pet-Mk.VIII_build_phase_23(ExteriorDone).png" width="820px"></td>
     </tr>
     <tr>
       <td>Interior Done<br>
-      <img src="./doc/Pet-Mk.VIII_build_phase_22(InteriorDone).png" width="700px"></td>
+      <img src="./doc/Pet-Mk.VIII_build_phase_22(InteriorDone).png" width="820px"></td>
     </tr>
 </table>
 
-# Modules
-## Module: Joystick
+# ROS2 System
+* Raspberry Pi 4 (8GB)
+    * built in 7" touch display
+    * wireless keyboard and mouse
+    * WiFi to communicate with robots
+* Ubuntu(64-bit) is used as operating system.
+* ROS2 (Robot Operating System 2) is used as middleware.
+* Docker to run ROS2
+
+## ROS2 Module: Joystick
 Using Analog/Digital Converter ADS1115 via I2C (3 of 4 channels in use)<br>
 - 3 directions joystick with each a 10K potentiometer.
 
@@ -58,7 +80,7 @@ For more information see repo https://github.com/Pet-Series/pet_ros2_joystick_pk
     </tr>
 </table>
 
-## Module: Trim Potentiometers
+## ROS2 Module: Trim Potentiometers
 Using Analog/Digital Converter ADS1115 via I2C (3 of 4 channels in use)<br>
 - 3x 10K Potentiometers
 For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main/pet_mk_viii
@@ -69,7 +91,7 @@ For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main
     </tr>
 </table>
 
-## Module: Buttons
+## ROS2 Module: Buttons
 Using direct GPIO-pins.
 - 1x button/switch as "main switch"
 - 1x button/switch on top of joystick
@@ -82,7 +104,7 @@ For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main
     </tr>
 </table>
 
-## Module: LED-strip
+## ROS2 Module: LED-strip
 Using direct GPIO-pins<br>
 - 5x LED with in series with a 1K resistor
 For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main/pet_mk_viii
@@ -93,7 +115,7 @@ For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main
     </tr>
 </table>
 
-## Module: Current & Voltage monitoring
+## ROS2 Module: Current & Voltage monitoring
 Using INA219 sensor via I2C-bus to measure internal voltage & current status for the Dashboard.<br>
 For more information see repo https://github.com/Pet-Series/pet_ros2_currentsensor_ina219_pkg
 <table>
