@@ -133,7 +133,7 @@ For more information see repo https://github.com/Pet-Series/pet_ros2_currentsens
 `Install & setup docker stuff...`
 ## Setup git repositories
 `Ubuntu Shell - Clone repositories`
-```
+```bash
 ~$ mkdir -p ~/ws_ros2/src
 ~$ cd ~/ws_ros2/src
 ~/ws_ros2/src$ git clone https://github.com/Pet-Series/Pet-Mk-VIII
@@ -148,7 +148,7 @@ For more information see repo https://github.com/Pet-Series/pet_ros2_currentsens
 ## Setup ROS2 workspace
 I don't have ROS2 installed directly on my host. I chose not to install ROS2 directly on the host/SCB/RPi, but to run ROS2 via Docker - Therfore must this step be done from within an interactive ROS2-Docker container.<br>
 `Ubuntu Shell - Build/Initiate ROS2 Work Space`
-```
+```bash
 ~/ws_ros2/src$ cd ..
 ~/ws_ros2$ 
 ~/ws_ros2$ colcon build --symlink-install
@@ -158,14 +158,14 @@ I don't have ROS2 installed directly on my host. I chose not to install ROS2 dir
 
 ## Launch ROS2 nodes
 Launch individual nodes one by one...
-```
+```bash
 ~/ws_ros2$ ros2 run pet_mk_viii_joystick joystick_node
 ~/ws_ros2$ ros2 run pet_mk_viii pet_buttons_node.py
 ~/ws_ros2$ ros2 launch pet_mk_viii panel_led_0..4_subscribers.launch.py
 ~/ws_ros2$ ros2 run pet_ros2_battery_state_pkg pet_battery_state_ina219_node
 ```
 Or by one launch file...
-```
+```bash
 ~/ws_ros2$ ros2 launch pet_mk_viii pet-mk-viii-bringup.launch.py
    ...
 ~/ws_ros2/src$
