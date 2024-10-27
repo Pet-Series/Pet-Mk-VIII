@@ -12,22 +12,23 @@
 ## Input: Switches/Button that is wired to each GPIO-pin
 ## Output: ROS2 node that publish topic 
 ##    joystick_button = HIGH/LOW  (default LOW)
-##    main_switch     = HIGH/LOW  (HIGH when activeated)
+##    main_switch     = HIGH/LOW  (HIGH when activated)
 ##
 ## Behaviour:
-##   1) Once: Initiate GPIO
-##   2) Repeatedly when pressed/released: Read input from GPIO
-##   3) Repeatedly when pressed/released: Publish input as ROS2 topic
+##      1) Once: Initiate GPIO
+##      2) Event driven - When pressed/released: Read input from GPIO
+##      3) Event driven - When pressed/released: Publish input as ROS2 topic
 ##
-## Prerequisite:
-##   $ sudo apt-get install python3-rpi.gpio
+## Prerequisite / Dependencies:
+##      $ sudo apt-get install python3-rpi.gpio
 ##
-## Hardware: Switch/Button#1 wired to GPIO-pin 12
-## Hardware: Switch/Button#1 wired to GPIO-pin 22
-## Hardware/SBC: Raspberry Pi 3-4 (Ubuntu or Raspian OS)
+## Prerequisite / Hardware:
+##      1) Switch/Button#1 wired to GPIO-pin 12
+##      2) Switch/Button#1 wired to GPIO-pin 22
+##      3) SBC: Raspberry Pi 3..5 (Running Ubuntu or Raspian OS)
 ##
 ## Launch sequence:
-##   1) $ ros2 run pet_mk_viii pet_buttons_node.py 
+##   1) $ ros2 run run pet_mk_viii pet_buttons_node 
 ##   2) $ ros2 topic echo /main_switch
 ##      $ ros2 topic echo /joystick_button
 ##
@@ -38,9 +39,10 @@ from rclpy.node import Node
 from std_msgs.msg  import Bool
 
 # Import the Ubuntu/Linux-hardware stuff 
-import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)    # Use GPIO-number for selcting input put.
-GPIO.setwarnings(False)   # Get rid of 'RuntimeWarning: This channel is already in use, continuing anyway'
+# import RPi.GPIO as GPIO
+import gpiod as GPIO
+#GPIO.setmode(GPIO.BCM)    # Use GPIO-number for selecting input put.
+#GPIO.setwarnings(False)   # Get rid of 'RuntimeWarning: This channel is already in use, continuing anyway'
 
 # Import the common Ubuntu/Linux stuff 
 import sys
@@ -70,7 +72,7 @@ class pet_button(Node):
         self.msg_button.data = False
         self.pub_button = self.create_publisher(Bool, topicname ,10)
 
-        # Publish intiate/start values
+        # Publish initiate/start values
         if GPIO.input(pin): 
             self.msg_button.data = True
         else:
@@ -93,7 +95,7 @@ class pet_button(Node):
 def main(args=None):
     rclpy.init(args=args)
     main_switch_node     = pet_button(MAIN_SWITCH_PIN,     MAIN_SWITCH_ROS_TOPIC,     GPIO.PUD_DOWN)
-    joystick_button_node = pet_button(JOYSTICK_BUTTON_PIN, JOYSTICK_BUTTON_ROS_TOPIC, GPIO.PUD_UP)
+    # joystick_button_node = pet_button(JOYSTICK_BUTTON_PIN, JOYSTICK_BUTTON_ROS_TOPIC, GPIO.PUD_UP)
 
     try:
         rclpy.spin(main_switch_node)  # TODO: Only 'spin' one of two nodes/buttons??? But is seems to work!

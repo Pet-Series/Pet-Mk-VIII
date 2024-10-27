@@ -65,11 +65,12 @@ The goul with our work is "It should be fun" and "The journey is the goal".
     * wireless keyboard and mouse
     * WiFi to communicate with robots
 * Ubuntu(64-bit) is used as operating system.
-* ROS2 (Robot Operating System 2) is used as middleware.
-* Docker to run ROS2
+* Docker to run Image/Container with Ubuntu/ROS2
+    * ROS2 (Robot Operating System 2) is used as middleware.
 
 ## ROS2 Module: Joystick
 Using Analog/Digital Converter ADS1115 via I2C (3 of 4 channels in use)<br>
+- Using I2C adr.=<code>0x48</code>
 - 3 directions joystick with each a 10K potentiometer.
 
 For more information see repo https://github.com/Pet-Series/pet_ros2_joystick_pkg
@@ -82,6 +83,7 @@ For more information see repo https://github.com/Pet-Series/pet_ros2_joystick_pk
 
 ## ROS2 Module: Trim Potentiometers
 Using Analog/Digital Converter ADS1115 via I2C (3 of 4 channels in use)<br>
+- Using I2C adr.=<code>0x49</code>
 - 3x 10K Potentiometers
 For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main/pet_mk_viii
 <table>
@@ -94,7 +96,9 @@ For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main
 ## ROS2 Module: Buttons
 Using direct GPIO-pins.
 - 1x button/switch as "main switch"
+  Using GPIO22 with build in GPIO-'pull down resistor'.
 - 1x button/switch on top of joystick
+  Using GPIO12 with build in GPIO-'pull up resistor'.
 
 For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main/pet_mk_viii
 <table>
@@ -107,6 +111,10 @@ For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main
 ## ROS2 Module: LED-strip
 Using direct GPIO-pins<br>
 - 5x LED with in series with a 1K resistor
+  GPIO05 <- LED3  {right one}
+  GPIO06 <- LED2
+  GPIO13 <- LED1
+  GPIO19 <- LED0  {left one}
 For more information see pkg https://github.com/Pet-Series/Pet-Mk-VIII/tree/main/pet_mk_viii
 <table>
     <tr>

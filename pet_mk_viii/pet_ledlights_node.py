@@ -8,7 +8,7 @@
 ## The MIT License (MIT)
 ##
 ## Input:  Subscribe to ROS2-topics
-## Output: Power up, swoitch on/off LED x5 (0..4)
+## Output: Power up, switch on/off LED x5 (0..4)
 ##
 ## Behaviour: 
 ##   1) Once: Read/Set all the parameters 
@@ -34,7 +34,7 @@
 ##
 ## Prerequisite: Linux/Ubuntu vs. Software
 ##   $ sudo apt install python3-pip
-##   $ sudo apt-get install python3-rpi.gpio
+##   $ sudo apt install python3-rpi.gpio
 ##
 ## Launch sequence (only one - Default is "/led1"):
 ##   0) $ source ./install/setup.bash
@@ -43,9 +43,9 @@
 ##   2) $ ros2 topic pub /led1 std_msgs/msg/Bool "data: True"  -1
 ##      $ ros2 topic pub /led1 std_msgs/msg/Bool "data: False" -1
 ##
-## Launch sequence (all 5 LED's):
+## Launch sequence (all 5 LED's on Pet-Mk.VIII Dashboard):
 ##   0) $ source ./install/setup.bash
-##   1) $ ros2 launch pet_mk_viii panel_led[0..4]_subscribers.launch.py
+##   1) $ ros2 launch pet_mk_viii panel_led_0..4_subscribers.launch.py
 ##        [pet_ledlights_node-4] [INFO]: LedLightNode has started 'panel_led_3' at GPIO-pin: 19
 ##        [pet_ledlights_node-3] [INFO]: LedLightNode has started 'panel_led_2' at GPIO-pin: 13
 ##        [pet_ledlights_node-1] [INFO]: LedLightNode has started 'panel_led_0' at GPIO-pin: 5
@@ -54,8 +54,8 @@
 ##   2) $ ros2 topic pub /panel_led_2 std_msgs/msg/Bool "data: True" -1
 ##      $ ros2 topic pub /panel_led_2 std_msgs/msg/Bool "data: False" -1
 ##
-## Using ROS2 parameters to setup each individual LED via the .lanuch.pt script above.
-##      $ ros2 param dump /LedLightNode --print
+## Using ROS2 parameters to setup each individual LED via the .lanuch.py script above.
+##      $ ros2 param dump /LedLightNode
 ##        /LedLightNode:
 ##          ros__parameters:
 ##            led_gpio_pin: 26
@@ -68,12 +68,11 @@ from rclpy.parameter import Parameter
 from rcl_interfaces.msg import ParameterDescriptor
 from std_msgs.msg import Bool
 
-# Importe the Raspberry Pi I/O stuff
+# Import the Raspberry Pi I/O stuff
 import RPi.GPIO as GPIO 
 
 #  Include Python stuff...
 import sys
-import signal
 from time import *
 
 GPIO.setmode(GPIO.BCM) # GPIO pin numbering

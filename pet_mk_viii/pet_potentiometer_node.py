@@ -9,16 +9,42 @@
 ##
 ## Target platform: Pet-Mk.VIII (aka. the "Dashboard")
 ## 
-## Input: Analog potentiometer chn. 1 + 2 + 3 (+4 not used at the moment)
+## Input: Analog potentiometer chn. 1 + 2 + 3 (+4 not used at the moment on the ADS1115 chip)
 ## Output: ROS2 node that publish topic potentiometer_p... with msg.type Int32
 ##
 ## Behaviour:
-##   1) Once: Read/Set all the parameters
-##   2) Repeatedly: Read analog potentiometer via ADC as raw-output
-##   3) Repeatedly: Transform the raw-ADC-output to a value bettween -100 and +100 and number of distict values set by the granularity
-##   4) Repeatedly: Publish ros-topic
+##   1) Once: Read/Set all the parameters with the following default values for node parameters
+##      1.1) List all parameters for a running node
+##          $ ros2 param dump /PotentiometerPublisher_node
+##              /PotentiometerPublisher_node:
+##                  ros__parameters:
+##                      adc_i2c_address: '0x49'
+##                      cycle_timer: 0.1
+##                      cycles_publish: 50
+##                      granularity: 5
+##                      ros_topic_p0: potentiometer_p0  
+##                      ros_topic_p1: potentiometer_p1
+##                      ros_topic_p2: potentiometer_p2
+##                      ros_topic_p3: potentiometer_p3
+##                      scale_p0: 1
+##                      scale_p1: 1
+##                      scale_p2: 1
+##                      scale_p3: 1
+##                      use_sim_time: false
+##      1.2) To override one of the parameters (Example Scale from 0..2000 for potentiometer 2)
+##          $ ros2 run pet_mk_viii pet_potentiometer_node --ros-args --param scale_p1:=2
 ##
-## Prerequisite:
+##      1.3) To override ALL parameters from a .yaml file  (file syntax see: ros2 param dump /PotentiometerPublisher_node )
+##          $ ros2 run pet_mk_viii pet_potentiometer_node --ros-args --params-file $HOME/ws_ros2/src/Pet-Mk-VIII/pet_mk_viii/pet_potentiometer_node.py
+##
+##   2) Repeatedly at 10Hz (See parameter 'cycle_timer: 0.1') 
+##      2.1) Read analog potentiometer via ADC as raw-output
+##      2.2) Transform the raw-ADC-output to a value between -100 and +100 and number of distinct values set by the granularity
+##      2.3) Repeatedly at 10Hz: Decide to publish ROS2 topic name or not (See parameter 'ros_topic_p0..3') depending on the following two rules
+##          2.3.1) Value change? If Yes => Then Publish all ROS2 topics (See variable 'doPublish = True')
+##          2.3.2) No change/publishing for 5 sec? If Yes => Then publish all ROS2 topics (See parameter 'cycles_publish: 50') 
+##
+## Prerequisite / Dependencies: 
 ##   $ sudo apt install i2c-tools
 ##   $ sudo i2cdetect -y 1
 ##   $ sudo apt install python3-pip
@@ -26,40 +52,61 @@
 ##   $ sudo pip3 install adafruit-ads1x15
 ##   $ sudo chmod a+rw /dev/i2c-1
 ##
-## Hardware: KY-053 ADC "Analog Digital Converter" (ADS1115, 16-bit) via default I2C adr.=0x49
-## Hardware: 3x Analog potentiometer that has about 10K resistors
-## Hardware/SBC: Raspberry Pi 3-4 (Ubuntu or Raspian OS) via I2C
+##
+## Prerequisite / Hardware
+##  1) KY-053 ADC "Analog Digital Converter" (ADS1115, 16-bit) via default I2C adr.=0x49
+##  2) 3x Analog potentiometer that has about 10K resistors
+##  3) Hardware/SBC: Raspberry Pi 3..5 (Ubuntu or Raspian OS) using I2C
 ##
 ## Launch sequence:
+##   0) $ source ./install/setup.bash
 ##   1) $ ros2 run pet_mk_viii pet_potentiometer_node.py
+##          [INFO] [1726052923.990975972] [PotentiometerPublisher_node]: PotentiometerPublisher_node has started
+##          [INFO] [1726052923.993765948] [PotentiometerPublisher_node]: - A/D: 0x49, P0-chn=potentiometer_p0, P1-chn=potentiometer_p1, P2-chn=potentiometer_p2, P3-chn=potentiometer_p3
+##          [INFO] [1726052923.996299631] [PotentiometerPublisher_node]: - A/D sampling: 10.0Hz
+##          [INFO] [1726052924.102641013] [PotentiometerPublisher_node]: -----Publish P0!
+##          [INFO] [1726052924.110070988] [PotentiometerPublisher_node]: -----Publish P1!
+##          [INFO] [1726052924.113278831] [PotentiometerPublisher_node]: -----Publish P2!
+##          [INFO] [1726052924.115883327] [PotentiometerPublisher_node]: -----Publish P3!
+##   2) $ ros2 topic list
+##          /parameter_events
+##          /potentiometer_p0
+##          /potentiometer_p1
+##          /potentiometer_p2
+##          /potentiometer_p3
 ##   2) $ ros2 topic echo /potentiometer_p0
 ##      $ ros2 topic echo /potentiometer_p2
 ##      $ ros2 topic echo /potentiometer_p3
+##          ---
+##          data: 0
+##          ---
+##          data: 500
+##          ---
+##          data: 1000
+##          ---
 ##
 
+# TODO: Make the scale factor of type 'DOUBLE' (Today it is of type 'INTEGER')
+# TODO: Make the SCALE-MIN & SCALE_MAX values as param. (Today hardcoded as 0 and 100)
 # TODO: Get rid of time.sleep() with something more real time/concurrent and ROS2 friendly way of wait...
 
 # Import the ROS2-stuff
-import rclpy  # TODO: IS this line neccesary. Due to the two following lines that importing "Node" and "Parameter"
+import rclpy
 from rclpy.node import Node
-from rclpy.parameter import Parameter
 from rcl_interfaces.msg import ParameterDescriptor
 from std_msgs.msg import Int32
 
 # Import the Ubuntu/Linux-hardware stuff 
-from smbus2 import SMBus
 import Adafruit_ADS1x15
-#from gpiozero import LED
 
 # Import the common Ubuntu/Linux stuff 
 import sys
 import time
-import signal
 
 class PotentiometerPublisher(Node): 
     '''
     Analog potentiometer class
-    Read analog input -> Publish on ROS-topic
+    Read analog input -> Publish on ROS2 topic
     '''
     
     # Keep track of last joystick values. Used due to reducing communication of equal values.
@@ -72,16 +119,16 @@ class PotentiometerPublisher(Node):
         super().__init__("PotentiometerPublisher_node")
         
         # Set default topic-name for publishing. Accessed via ROS Parameters...
-        self.declare_parameter( 'ros_topic_p0', 'potentiometer_p0', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p0"]') )
+        self.declare_parameter( 'ros_topic_p0', 'potentiometer_p0', ParameterDescriptor(description='ROS2 topic name. Publish position of potentiometer (Not yet used on Pet-Mk.VIII) [default "potentiometer_p0"]') )
         self.ROS_TOPIC_P0 = self.get_parameter('ros_topic_p0').get_parameter_value().string_value
 
-        self.declare_parameter( 'ros_topic_p1', 'potentiometer_p1', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p1"]') )
+        self.declare_parameter( 'ros_topic_p1', 'potentiometer_p1', ParameterDescriptor(description='ROS2 topic name. Publish position of potentiometer [default "potentiometer_p1"]') )
         self.ROS_TOPIC_P1 = self.get_parameter('ros_topic_p1').get_parameter_value().string_value
 
-        self.declare_parameter( 'ros_topic_p2', 'potentiometer_p2', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p2"]') )
+        self.declare_parameter( 'ros_topic_p2', 'potentiometer_p2', ParameterDescriptor(description='ROS2 topic name. Publish position of potentiometer [default "potentiometer_p2"]') )
         self.ROS_TOPIC_P2 = self.get_parameter('ros_topic_p2').get_parameter_value().string_value
 
-        self.declare_parameter( 'ros_topic_p3', 'potentiometer_p3', ParameterDescriptor(description='ROS-topc name. Publish position of potentiometer [default "potentiometer_p3"]') )
+        self.declare_parameter( 'ros_topic_p3', 'potentiometer_p3', ParameterDescriptor(description='ROS2 topic name. Publish position of potentiometer [default "potentiometer_p3"]') )
         self.ROS_TOPIC_P3 = self.get_parameter('ros_topic_p3').get_parameter_value().string_value
 
         # Set default ADC-I2C address. Accessed via ROS Parameters...
@@ -101,7 +148,7 @@ class PotentiometerPublisher(Node):
         self.declare_parameter( 'scale_p3', 1, ParameterDescriptor(description='Scale factor 0->1000 value [default=1]') )
         self.SCALE_P3 = self.get_parameter( 'scale_p3' ).value 
 
-        # Granularity is the values stepsize between. Accessed via ROS Parameters...
+        # Granularity is the values step size between. Accessed via ROS Parameters...
         self.declare_parameter( 'granularity', 5, ParameterDescriptor(description='Joystick value step-size [default 5].') )
         self.GRANULARITY = self.get_parameter( 'granularity' ).value
 
@@ -115,7 +162,7 @@ class PotentiometerPublisher(Node):
         self.republish_counter = self.CYCLES_COUNTER
 
         exit = False
-        # Check we can open the analog/digitala converter, ads1115, via I2C-interface.
+        # Check we can open the analog/digital converter, ads1115, via I2C-interface.
         try:
             self.adc = Adafruit_ADS1x15.ADS1115( busnum=1, address=int(self.ADC_I2C_ADDRESS,0) )  # "0" works for both Dec and Hex strings...
 
@@ -154,10 +201,10 @@ class PotentiometerPublisher(Node):
         self.msg_p3.data = 0         
 
     def process_potentiometers(self):
-        # Read values from potetinometers P0, P1, P2 and P3
+        # Read values from potentiometers P0, P1, P2 and P3
         # With gain=1 the "raw"-value(1...26400) and middle 13200
         # With gain=2/3 the "raw"-value(1...17600) and middle 8900
-        # My ads1115 needed a little sleep between measuerments to settle on a good value
+        # My ads1115 needed a little sleep between measurements to settle on a good value
         p0_raw= self.adc.read_adc(0, gain=1, data_rate=128) # ADS1115 channel 0. 
         time.sleep(0.01)
 
@@ -172,20 +219,17 @@ class PotentiometerPublisher(Node):
  
         # self.get_logger().info("Raw: P0=" + str(p0_raw) + " P1=" + str(p1_raw) + " P2=" + str(p2_raw))
 
-        # Convert to a value bettween -100 and +100 and number of distict values set by the granularity
+        # Convert to a value between -100 and +100 and number of distinct values set by the granularity
         value_p0 = ( round((round(p0_raw/26.410) * self.SCALE_P0 ) / self.GRANULARITY)) * self.GRANULARITY
         value_p1 = ( round((round(p1_raw/26.410) * self.SCALE_P1 ) / self.GRANULARITY)) * self.GRANULARITY
         value_p2 = ( round((round(p2_raw/26.410) * self.SCALE_P2 ) / self.GRANULARITY)) * self.GRANULARITY
         value_p3 = ( round((round(p3_raw/26.410) * self.SCALE_P3 ) / self.GRANULARITY)) * self.GRANULARITY
         
-        
-        # Only output a twist message when the joystick values change,
+        # Only output a message when the joystick values change,
         # If nothing published for N loops/iterations - Then send the last value again.
         doPublish = False
 
-
         self.republish_counter -= 1
-
 
         if (self.last_value_p0 != value_p0):
             # Change in P0 value
@@ -238,7 +282,7 @@ def main(args=None):
         print("**** * 💀 Ctrl-C detected...")
     
     finally:
-        print("**** 🪦 joystick_node ending... " + str(sys.exc_info()[1]) )
+        print("**** 🪦 potentiometer_node ending... " + str(sys.exc_info()[1]) )
         # Time to clean up stuff!
         rclpy.shutdown()
 
