@@ -1,10 +1,14 @@
 #!/usr/bin/env python
+# coding = utf-8
+#
+# Raspberry Pi piggy-back UPS.
+# using the "old" RPi.GPIO" library... => Some compatible issues with newer kernel like 5.11...
+# 
 import struct
 import smbus
 import sys
 import time
 import RPi.GPIO as GPIO
-
 
 
 def readVoltage(bus):
@@ -18,7 +22,7 @@ def readVoltage(bus):
 
 
 def readCapacity(bus):
-        "This function returns as a float the remaining capacity of the battery connected to the Raspi UPS Hat via the provided SMBus object"
+        "This function returns as a float the remaining capacity of the battery connected to the Raspberry Pi UPS Hat via the provided SMBus object"
         address = 0x36
         read = bus.read_word_data(address, 0X04)
         swapped = struct.unpack("<H", struct.pack(">H", read))[0]
@@ -29,24 +33,20 @@ def readCapacity(bus):
 def QuickStart(bus):
         address = 0x36
         bus.write_word_data(address, 0x06,0x4000)
-      
+
 
 def PowerOnReset(bus):
         address = 0x36
         bus.write_word_data(address, 0xfe,0x0054)
-       
 
-	   
-	   
+
+bus = smbus.SMBus(1)  # 0 = /dev/i2c-0 (port I2C0), 1 = /dev/i2c-1 (port I2C1)
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(4,GPIO.IN)
-	   
-bus = smbus.SMBus(1)  # 0 = /dev/i2c-0 (port I2C0), 1 = /dev/i2c-1 (port I2C1)
 
 PowerOnReset(bus)
 QuickStart(bus)
-
 
 print ("  ")
 print ("Initialize the MAX17040 ......")
@@ -59,18 +59,17 @@ while True:
  print ("Battery:%5i%%" % readCapacity(bus))
  
  if readCapacity(bus) == 100:
-
         print ("Battery FULL")
 
  if readCapacity(bus) < 5:
-
         print ("Battery LOW")
-	
- if (GPIO.input(4) == GPIO.HIGH):  
-		print ("Power Adapter Plug In ") 
+
+ if (GPIO.input(4) == GPIO.HIGH):
+        print ("Power Adapter Plug In ")
 		
- if (GPIO.input(4) == GPIO.LOW):   
-		print ("Power Adapter Unplug")
-				
+ if (GPIO.input(4) == GPIO.LOW):
+        print ("Power Adapter Unplug")
+
+
  print ("++++++++++++++++++++")
  time.sleep(2)
