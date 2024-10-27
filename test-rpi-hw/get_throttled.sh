@@ -1,5 +1,21 @@
 #!/bin/bash
-# "vcgencmd get_throttled for humans" - https://github.com/alwye/get_throttled
+#
+# Show diagnos data for a Raspberry Pi 
+#   'vcgencmd' is a command line tool designed by Broadcom used on the Raspberry Pi.
+#   Interact directly with the hardware or the boot software of a Raspberry pi.
+#
+# Requires:
+#   $ sudo apt install -y libraspberrypi-bin
+#
+#   $ vcgencmd measure_temp
+#   $ vcgencmd get_throttled     => "vcgencmd get_throttled for humans" - https://github.com/alwye/get_throttled
+#   $ vcgencmd measure_clock arm
+#   $ vcgencmd get_mem arm
+#   $ vcgencmd get_mem gpu
+#   $ vcgencmd get_lcd_info
+#   $ vcgencmd measure_volts core
+#   $ vcgencmd measure_volts
+#   $ vcgencmd measure_clock arm
 
 ISSUES_MAP=( \
   [0]="Under-voltage detected" \
